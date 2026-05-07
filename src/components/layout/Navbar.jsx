@@ -64,6 +64,15 @@ export default function Navbar() {
               {item.label}
             </NavLink>
           ))}
+          {/* SASAKU special link */}
+          <Link
+            to="/sasaku"
+            className={`text-xs font-bold tracking-[0.12em] uppercase px-3 py-1 border-2 border-teal-600 transition-all duration-200 ${
+              scrolled ? 'text-teal-700 hover:bg-teal-700 hover:text-white' : 'text-teal-300 border-teal-400 hover:bg-teal-700 hover:text-white hover:border-teal-700'
+            }`}
+          >
+            SASAKU
+          </Link>
         </nav>
 
         {/* CTA Button */}
@@ -104,6 +113,14 @@ export default function Navbar() {
                 {item.label}
               </NavLink>
             ))}
+            <Link
+              to="/sasaku"
+              onClick={() => setMenuOpen(false)}
+              className="py-3 px-2 text-sm font-bold tracking-widest uppercase border-b border-gray-50 text-teal-700 hover:text-teal-900 transition-colors duration-200 flex items-center gap-2"
+            >
+              <span className="w-2 h-2 bg-teal-600 inline-block"></span>
+              SASAKU — Student Association
+            </Link>
             <Link
               to="/contact"
               onClick={() => setMenuOpen(false)}

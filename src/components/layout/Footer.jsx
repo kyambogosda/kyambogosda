@@ -8,6 +8,7 @@ const quickLinks = [
   { label: 'Events',      path: '/events' },
   { label: 'Give',        path: '/give' },
   { label: 'Contact',     path: '/contact' },
+  { label: 'SASAKU',      path: '/sasaku', highlight: true },
 ]
 
 const beliefs = [
@@ -92,10 +93,15 @@ export default function Footer() {
               <li key={l.path}>
                 <Link
                   to={l.path}
-                  className="text-gray-300 text-sm hover:text-gold transition-colors duration-200 flex items-center gap-2"
+                  className={`text-sm hover:text-gold transition-colors duration-200 flex items-center gap-2 ${
+                    l.highlight ? 'text-teal-400 font-bold' : 'text-gray-300'
+                  }`}
                 >
-                  <span className="w-1.5 h-1.5 bg-gold inline-block shrink-0"></span>
+                  <span className={`w-1.5 h-1.5 inline-block shrink-0 ${
+                    l.highlight ? 'bg-teal-500' : 'bg-gold'
+                  }`}></span>
                   {l.label}
+                  {l.highlight && <span className="text-[9px] bg-teal-700 text-white px-1.5 py-0.5 uppercase tracking-wider font-bold">Students</span>}
                 </Link>
               </li>
             ))}
@@ -166,6 +172,26 @@ export default function Footer() {
               ))}
             </ul>
           </div>
+        </div>
+      </div>
+
+      {/* SASAKU promo strip */}
+      <div className="border-t border-white border-opacity-10 bg-teal-900 bg-opacity-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-teal-700 flex flex-col items-center justify-center text-white font-black text-[8px] leading-none shrink-0">
+              <span>SA</span><span>SA</span><span>KU</span>
+            </div>
+            <p className="text-gray-300 text-xs">
+              <span className="text-teal-400 font-bold">SASAKU</span> — Seventh-day Adventist Students Association of Kyambogo University
+            </p>
+          </div>
+          <Link
+            to="/sasaku"
+            className="text-xs font-bold uppercase tracking-widest text-teal-400 border border-teal-600 px-4 py-1.5 hover:bg-teal-700 hover:text-white transition-all duration-300 shrink-0"
+          >
+            Visit SASAKU →
+          </Link>
         </div>
       </div>
 
