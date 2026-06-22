@@ -1,46 +1,61 @@
-import { useState, useEffect } from 'react'
-import { Link, NavLink } from 'react-router-dom'
-import { HiMenuAlt3, HiX } from 'react-icons/hi'
+import { useState, useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { HiMenuAlt3, HiX } from "react-icons/hi";
+import churchlogo from "../../assets/sdachurchlogo.png";
 
 const navItems = [
-  { label: 'Home',        path: '/' },
-  { label: 'About',       path: '/about' },
-  { label: 'Sermons',     path: '/sermons' },
-  { label: 'Ministries',  path: '/ministries' },
-  { label: 'Events',      path: '/events' },
-  { label: 'Give',        path: '/give' },
-  { label: 'Contact',     path: '/contact' },
-]
+  { label: "Home", path: "/" },
+  { label: "About", path: "/about" },
+  { label: "Sermons", path: "/sermons" },
+  { label: "Ministries", path: "/ministries" },
+  { label: "Events", path: "/events" },
+  { label: "Give", path: "/give" },
+  { label: "Contact", path: "/contact" },
+];
 
 export default function Navbar() {
-  const [scrolled, setScrolled]   = useState(false)
-  const [menuOpen, setMenuOpen]   = useState(false)
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${
-        scrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5'
+        scrolled ? "bg-white shadow-md py-3" : "bg-transparent py-5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 bg-gold flex items-center justify-center shrink-0">
+            <img
+              src={churchlogo}
+              alt="SDA Church Logo"
+              className="w-full h-full object-cover"
+            />
             <svg viewBox="0 0 40 40" fill="none" className="w-6 h-6">
-              <path d="M20 4L20 36M4 20H36M12 8L28 32M28 8L12 32" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+              <path
+                d="M20 4L20 36M4 20H36M12 8L28 32M28 8L12 32"
+                stroke="white"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
             </svg>
           </div>
           <div>
-            <div className={`font-heading font-bold text-base leading-tight transition-colors duration-300 ${scrolled ? 'text-primary' : 'text-white'}`}>
-              Kyambogo SDA
+            <div
+              className={`font-heading font-bold text-base leading-tight transition-colors duration-300 ${scrolled ? "text-primary" : "text-white"}`}
+            >
+              Kyambogo University SDA
             </div>
-            <div className={`text-xs tracking-widest uppercase font-medium transition-colors duration-300 ${scrolled ? 'text-gold' : 'text-gold'}`}>
+            <div
+              className={`text-xs tracking-widest uppercase font-medium transition-colors duration-300 ${scrolled ? "text-gold" : "text-gold"}`}
+            >
               Church
             </div>
           </div>
@@ -48,16 +63,18 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-7">
-          {navItems.map(item => (
+          {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
-              end={item.path === '/'}
+              end={item.path === "/"}
               className={({ isActive }) =>
                 `text-xs font-semibold tracking-[0.12em] uppercase transition-colors duration-200 ${
                   isActive
-                    ? 'text-gold border-b-2 border-gold pb-0.5'
-                    : scrolled ? 'text-primary hover:text-gold' : 'text-white hover:text-gold'
+                    ? "text-gold border-b-2 border-gold pb-0.5"
+                    : scrolled
+                      ? "text-primary hover:text-gold"
+                      : "text-white hover:text-gold"
                 }`
               }
             >
@@ -68,7 +85,9 @@ export default function Navbar() {
           <Link
             to="/sasaku"
             className={`text-xs font-bold tracking-[0.12em] uppercase px-3 py-1 border-2 border-teal-600 transition-all duration-200 ${
-              scrolled ? 'text-teal-700 hover:bg-teal-700 hover:text-white' : 'text-teal-300 border-teal-400 hover:bg-teal-700 hover:text-white hover:border-teal-700'
+              scrolled
+                ? "text-teal-700 hover:bg-teal-700 hover:text-white"
+                : "text-teal-300 border-teal-400 hover:bg-teal-700 hover:text-white hover:border-teal-700"
             }`}
           >
             SASAKU
@@ -86,7 +105,7 @@ export default function Navbar() {
         {/* Mobile toggle */}
         <button
           id="mobile-menu-toggle"
-          className={`lg:hidden text-2xl transition-colors duration-200 ${scrolled ? 'text-primary' : 'text-white'}`}
+          className={`lg:hidden text-2xl transition-colors duration-200 ${scrolled ? "text-primary" : "text-white"}`}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -98,15 +117,15 @@ export default function Navbar() {
       {menuOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
           <nav className="flex flex-col py-4 px-6 gap-1">
-            {navItems.map(item => (
+            {navItems.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
-                end={item.path === '/'}
+                end={item.path === "/"}
                 onClick={() => setMenuOpen(false)}
                 className={({ isActive }) =>
                   `py-3 px-2 text-sm font-semibold tracking-widest uppercase border-b border-gray-50 transition-colors duration-200 ${
-                    isActive ? 'text-gold' : 'text-primary hover:text-gold'
+                    isActive ? "text-gold" : "text-primary hover:text-gold"
                   }`
                 }
               >
@@ -132,5 +151,5 @@ export default function Navbar() {
         </div>
       )}
     </header>
-  )
+  );
 }
