@@ -67,7 +67,7 @@ const executives = [
   { name: "Akandwanaho Bright", role: "President", img: brightImg },
   { name: "Nalunkuuma Lillian", role: "Vice President", img: lillianImg },
   {
-    name: "Sis. Lunyolo Elizabeth",
+    name: "Lunyolo Elizabeth",
     role: "General Secretary",
     img: lunyoloImg,
   },
@@ -177,28 +177,28 @@ const events = [
     tag: "Special",
   },
   {
-    day: "20",
-    month: "May",
-    title: "Campus Bible Study",
-    time: "5:00 PM",
-    venue: "Block A Student Centre, KyU",
-    tag: "Bible Study",
+    day: "15",
+    month: "August",
+    title: "Freshers' Sabbath",
+    time: "8:00AM - 5:00 PM",
+    venue: "Kyambogo University SDA Church",
+    tag: "Special",
   },
   {
-    day: "31",
-    month: "May",
-    title: "End of Semester Service & Thanksgiving",
-    time: "10:00 AM",
+    day: "30",
+    month: "August",
+    title: "End of Month movie night",
+    time: "6:00 PM",
     venue: "Kyambogo SDA Church",
     tag: "Special",
   },
   {
-    day: "07",
-    month: "Jun",
-    title: "Evangelism Outreach Day",
-    time: "9:00 AM",
-    venue: "Kyambogo Campus Grounds",
-    tag: "Outreach",
+    day: "Coming",
+    month: "Soon",
+    title: "SocialDay Out",
+    time: "All Day",
+    venue: "To be communicated",
+    tag: "Social",
   },
 ];
 
@@ -296,7 +296,7 @@ export default function Sasaku() {
             </span>
             <span className="opacity-40 hidden sm:block">|</span>
             <span className="flex items-center gap-2">
-              <FaMapMarkerAlt /> Kyambogo University & SDA Church
+              <FaMapMarkerAlt /> Kyambogo University SDA Church
             </span>
           </div>
         </div>
