@@ -15,6 +15,7 @@ import { getLatestSermon } from "../services/youtube";
 import congregationImg from "../assets/kyambogocongregation.jpg";
 import communityImg from "../assets/community_service.png";
 import { formatSermonDate } from "../utils/utils";
+import VideoModal from "../components/ui/VideoModal";
 
 const upcomingEvents = [
   {
@@ -75,6 +76,7 @@ const stats = [
 
 export default function Home() {
   const [latestSermon, setLatestSermon] = useState(null);
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
     getLatestSermon().then(setLatestSermon);
@@ -282,14 +284,12 @@ export default function Home() {
               />
 
               <div className="absolute inset-0 bg-primary bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <a
-                  href={`https://www.youtube.com/watch?v=${latestSermon?.id?.videoId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => setSelectedVideo(latestSermon.id.videoId)}
                   className="w-16 h-16 bg-gold flex items-center justify-center hover:scale-110 transition-transform duration-200"
                 >
                   <FaPlay className="text-white text-xl ml-1" />
-                </a>
+                </button>
               </div>
 
               <div className="absolute top-4 left-4 bg-gold text-white text-xs font-bold uppercase px-3 py-1 tracking-widest">
@@ -301,7 +301,7 @@ export default function Home() {
             <div>
               <p className="section-label mb-3">From the Pulpit</p>
 
-              <h2 className="font-heading text-4xl text-primary font-bold leading-tight mb-4">
+              <h2 className="font-heading text-xl md:text-4xl text-primary font-bold leading-tight mb-4">
                 {latestSermon?.snippet?.title}
               </h2>
 
@@ -453,6 +453,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <VideoModal
+        isOpen={!!selectedVideo}
+        videoId={selectedVideo}
+        onClose={() => setSelectedVideo(null)}
+      />
     </>
   );
 }

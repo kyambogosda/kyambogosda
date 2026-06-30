@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FaPlay, FaYoutube, FaCalendarAlt, FaUser } from "react-icons/fa";
 import { HiArrowRight } from "react-icons/hi";
 import SectionHeader from "../components/ui/SectionHeader";
+import VideoModal from "../components/ui/VideoModal";
 import { getSermons } from "../services/youtube";
 import { formatSermonDate } from "../utils/utils";
 
@@ -38,6 +39,7 @@ export default function Sermons() {
   const [sermons, setSermons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
     getSermons()
@@ -135,14 +137,12 @@ export default function Sermons() {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-primary bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <a
-                      href={`https://www.youtube.com/watch?v=${sermon.id.videoId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => setSelectedVideo(sermon.id.videoId)}
                       className="w-12 h-12 bg-gold flex items-center justify-center"
                     >
                       <FaPlay className="text-white text-base ml-0.5" />
-                    </a>
+                    </button>
                   </div>
                   <span className="absolute top-3 right-3 bg-gold text-white text-xs font-bold uppercase px-2 py-0.5 tracking-wide">
                     Sermon
@@ -163,14 +163,12 @@ export default function Sermons() {
                     </p>
                   </div>
                   <div className="mt-4 pt-4 border-t border-gray-100">
-                    <a
-                      href={`https://www.youtube.com/watch?v=${sermon.id.videoId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => setSelectedVideo(sermon.id.videoId)}
                       className="text-gold text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors duration-200 flex items-center gap-1"
                     >
                       Watch Message <HiArrowRight />
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -203,6 +201,11 @@ export default function Sermons() {
           </a>
         </div>
       </section>
+      <VideoModal
+        isOpen={!!selectedVideo}
+        videoId={selectedVideo}
+        onClose={() => setSelectedVideo(null)}
+      />
     </>
   );
 }
