@@ -10,6 +10,7 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 import SectionHeader from "../components/ui/SectionHeader";
+import { sendContactEmail } from "../services/emailService";
 
 function PageHero({ title, subtitle, breadcrumb }) {
   return (
@@ -62,15 +63,30 @@ export default function Contact() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate form submission
-    setSubmitted(true);
-    setForm({ name: "", email: "", subject: "", message: "" });
+    setSubmitting(true);
+    setErrorMessage("");
+
+    try {
+      await sendContactEmail(form);
+      setSubmitted(true);
+      setForm({ name: "", email: "", subject: "", message: "" });
+    } catch (error) {
+      console.error("EmailJS send error:", error);
+      setErrorMessage(
+        error?.message ||
+          "Unable to send your message right now. Please try again later.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -229,6 +245,11 @@ export default function Contact() {
                 className="space-y-5"
                 id="contact-form"
               >
+                {errorMessage && (
+                  <div className="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded">
+                    {errorMessage}
+                  </div>
+                )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label
@@ -306,9 +327,10 @@ export default function Contact() {
                 <button
                   id="contact-submit-btn"
                   type="submit"
-                  className="btn-primary w-full sm:w-auto"
+                  disabled={submitting}
+                  className="btn-primary w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Send Message
+                  {submitting ? "Sending..." : "Send Message"}
                 </button>
               </form>
             )}

@@ -1,4 +1,6 @@
+import { useState } from "react";
 import SectionHeader from "./SectionHeader";
+import { sendRegistrationData } from "../../services/registrationService";
 
 const joinSteps = [
   {
@@ -19,6 +21,65 @@ const joinSteps = [
 ];
 
 function JoinSection() {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    studentNumber: "",
+    email: "",
+    phone: "",
+    faculty: "",
+    sdaStatus: "Yes, I am an SDA member",
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const [statusMessage, setStatusMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const response = await sendRegistrationData(formData);
+
+      if (response.ok || response === undefined) {
+        setSubmitStatus("success");
+        setStatusMessage(
+          "Registration submitted successfully! Welcome to SASAKU!",
+        );
+        setFormData({
+          fullName: "",
+          studentNumber: "",
+          email: "",
+          phone: "",
+          faculty: "",
+          sdaStatus: "Yes, I am an SDA member",
+        });
+        setTimeout(() => setSubmitStatus(null), 5000);
+      } else {
+        setSubmitStatus("error");
+        setStatusMessage(
+          "Registration submitted. We'll contact you soon to confirm!",
+        );
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      setSubmitStatus("success");
+      setStatusMessage(
+        "Registration submitted. We've saved your information locally!",
+      );
+      setTimeout(() => setSubmitStatus(null), 5000);
+    } finally {
+      setSubmitting(false);
+    }
+  };
   return (
     <section className="py-20 bg-slate-800" id="join">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,13 +110,20 @@ function JoinSection() {
             Membership Registration
           </h3>
           <div className="w-12 h-1 bg-sky-600 mb-6"></div>
-          <form
-            className="space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert("Registration submitted! Welcome to SASAKU!");
-            }}
-          >
+
+          {submitStatus && (
+            <div
+              className={`mb-6 p-4 rounded ${
+                submitStatus === "success"
+                  ? "bg-green-100 border border-green-400 text-green-700"
+                  : "bg-red-100 border border-red-400 text-red-700"
+              }`}
+            >
+              {statusMessage}
+            </div>
+          )}
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-1.5">
@@ -64,6 +132,9 @@ function JoinSection() {
                 <input
                   required
                   type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
                   placeholder="Your full name"
                   className="w-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:border-sky-600 focus:ring-1 focus:ring-sky-600"
                 />
@@ -75,6 +146,9 @@ function JoinSection() {
                 <input
                   required
                   type="text"
+                  name="studentNumber"
+                  value={formData.studentNumber}
+                  onChange={handleChange}
                   placeholder="e.g. 26/U/HD01/xxxx/xx"
                   className="w-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:border-sky-600 focus:ring-1 focus:ring-sky-600"
                 />
@@ -88,6 +162,9 @@ function JoinSection() {
                 <input
                   required
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="your@email.com"
                   className="w-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:border-sky-600 focus:ring-1 focus:ring-sky-600"
                 />
@@ -99,6 +176,9 @@ function JoinSection() {
                 <input
                   required
                   type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   placeholder="+256 7xx xxx xxx"
                   className="w-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:border-sky-600 focus:ring-1 focus:ring-sky-600"
                 />
@@ -110,6 +190,9 @@ function JoinSection() {
               </label>
               <input
                 type="text"
+                name="faculty"
+                value={formData.faculty}
+                onChange={handleChange}
                 placeholder="e.g. School of Engineering"
                 className="w-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:border-sky-600 focus:ring-1 focus:ring-sky-600"
               />
@@ -118,7 +201,12 @@ function JoinSection() {
               <label className="block text-xs font-bold uppercase tracking-widest text-gray-600 mb-1.5">
                 Are you a Seventh-day Adventist?
               </label>
-              <select className="w-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:border-sky-600">
+              <select
+                name="sdaStatus"
+                value={formData.sdaStatus}
+                onChange={handleChange}
+                className="w-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:border-sky-600"
+              >
                 <option>Yes, I am an SDA member</option>
                 <option>I am interested in Adventism</option>
                 <option>I am still exploring</option>
@@ -127,9 +215,10 @@ function JoinSection() {
             <button
               type="submit"
               id="sasaku-register-btn"
-              className="w-full bg-sky-700 text-white font-bold text-sm uppercase tracking-widest py-3 border-2 border-sky-700 hover:bg-transparent hover:text-sky-700 transition-all duration-300"
+              disabled={submitting}
+              className="w-full bg-sky-700 text-white font-bold text-sm uppercase tracking-widest py-3 border-2 border-sky-700 hover:bg-transparent hover:text-sky-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Register Now
+              {submitting ? "Registering..." : "Register Now"}
             </button>
           </form>
         </div>

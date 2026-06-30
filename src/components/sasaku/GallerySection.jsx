@@ -122,11 +122,11 @@ function GallerySection({
                 ))}
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
+              <div className="columns-2 sm:columns-3 md:columns-4 gap-4 max-h-96 overflow-y-auto">
                 {filteredGalleryImgs.map((img, i) => (
                   <div
                     key={i}
-                    className="overflow-hidden group aspect-square cursor-pointer rounded"
+                    className="overflow-hidden group cursor-pointer rounded mb-4 break-inside-avoid"
                     onClick={() => {
                       setSelectedImage(img);
                       setShowGalleryModal(false);
@@ -135,7 +135,7 @@ function GallerySection({
                     <img
                       src={img.src}
                       alt={img.alt}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                 ))}
