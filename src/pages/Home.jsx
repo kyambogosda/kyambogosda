@@ -79,7 +79,11 @@ export default function Home() {
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
-    getLatestSermon().then(setLatestSermon);
+    getLatestSermon()
+      .then(setLatestSermon)
+      .catch((err) =>
+        console.error("Failed to fetch latest sermon:", err.message),
+      );
   }, []);
 
   return (
@@ -277,20 +281,36 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
             <div className="relative group cursor-pointer">
-              <img
-                src={latestSermon?.snippet?.thumbnails?.high?.url}
-                alt={latestSermon?.snippet?.title}
-                className="w-full h-[200px] md:h-[300px] object-cover shadow-xl"
-              />
+              {latestSermon ? (
+                <>
+                  <img
+                    src={
+                      latestSermon?.snippet?.thumbnails?.high?.url ||
+                      latestSermon?.snippet?.thumbnails?.medium?.url ||
+                      latestSermon?.snippet?.thumbnails?.default?.url
+                    }
+                    alt={latestSermon?.snippet?.title}
+                    className="w-full h-[200px] md:h-[300px] object-cover shadow-xl"
+                  />
 
-              <div className="absolute inset-0 bg-primary bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <button
-                  onClick={() => setSelectedVideo(latestSermon.id.videoId)}
-                  className="w-16 h-16 bg-gold flex items-center justify-center hover:scale-110 transition-transform duration-200"
-                >
-                  <FaPlay className="text-white text-xl ml-1" />
-                </button>
-              </div>
+                  <div className="absolute inset-0 bg-primary bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button
+                      onClick={() =>
+                        setSelectedVideo(latestSermon?.id?.videoId)
+                      }
+                      className="w-16 h-16 bg-gold flex items-center justify-center hover:scale-110 transition-transform duration-200"
+                    >
+                      <FaPlay className="text-white text-xl ml-1" />
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="w-full h-[200px] md:h-[300px] bg-gray-300 shadow-xl flex items-center justify-center">
+                  <span className="text-gray-500">
+                    Loading latest sermon...
+                  </span>
+                </div>
+              )}
 
               <div className="absolute top-4 left-4 bg-gold text-white text-xs font-bold uppercase px-3 py-1 tracking-widest">
                 Latest Sermon
@@ -302,14 +322,16 @@ export default function Home() {
               <p className="section-label mb-3">From the Pulpit</p>
 
               <h2 className="font-heading text-xl md:text-4xl text-primary font-bold leading-tight mb-4">
-                {latestSermon?.snippet?.title}
+                {latestSermon?.snippet?.title || "Sermon Loading..."}
               </h2>
 
               <div className="w-16 h-1 bg-gold mb-6"></div>
 
               <p className="text-gray-500 text-sm mb-6">
                 <span className="text-gold font-semibold">Published:</span>{" "}
-                {formatSermonDate(latestSermon?.snippet?.publishedAt)}
+                {latestSermon
+                  ? formatSermonDate(latestSermon?.snippet?.publishedAt)
+                  : "Date unavailable"}
               </p>
 
               <p className="text-gray-600 leading-relaxed mb-8 line-clamp-4">
@@ -318,15 +340,17 @@ export default function Home() {
               </p>
 
               <div className="flex flex-wrap gap-4">
-                <a
-                  href={`https://www.youtube.com/watch?v=${latestSermon?.id?.videoId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary inline-flex items-center gap-2"
-                >
-                  <FaPlay className="text-xs" />
-                  Watch on YouTube
-                </a>
+                {latestSermon?.id?.videoId ? (
+                  <a
+                    href={`https://www.youtube.com/watch?v=${latestSermon?.id?.videoId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary inline-flex items-center gap-2"
+                  >
+                    <FaPlay className="text-xs" />
+                    Watch on YouTube
+                  </a>
+                ) : null}
 
                 <Link
                   to="/sermons"

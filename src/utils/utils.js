@@ -1,4 +1,6 @@
 export function formatSermonDate(dateString) {
+  if (!dateString) return "Date unavailable";
+
   const date = new Date(dateString);
 
   date.setDate(date.getDate() - 1);
