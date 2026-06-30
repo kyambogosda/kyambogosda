@@ -7,36 +7,38 @@ import {
   FaHeart,
   FaHandHoldingHeart,
 } from "react-icons/fa";
+import { useState, useEffect } from "react";
 import { HiArrowRight } from "react-icons/hi";
 import SectionHeader from "../components/ui/SectionHeader";
 import churchHero from "../assets/kyambogosdachurch.jpeg";
-import sermonImg from "../assets/sermon_image.png";
+import { getLatestSermon } from "../services/youtube";
 import congregationImg from "../assets/kyambogocongregation.jpg";
 import communityImg from "../assets/community_service.png";
+import { formatSermonDate } from "../utils/utils";
 
 const upcomingEvents = [
   {
     id: 1,
-    date: { day: "17", month: "May" },
+    date: { day: "04", month: "July" },
     title: "Sabbath Divine Service",
     time: "11:00 AM",
-    venue: "Main Sanctuary",
+    venue: "Church",
     tag: "Worship",
   },
   {
     id: 2,
-    date: { day: "21", month: "May" },
+    date: { day: "01", month: "July" },
     title: "Mid-Week Prayer Meeting",
     time: "6:00 PM",
-    venue: "Prayer Hall",
+    venue: "Church",
     tag: "Prayer",
   },
   {
     id: 3,
-    date: { day: "24", month: "May" },
+    date: { day: "04", month: "July" },
     title: "Youth (AY) Sabbath Program",
     time: "3:00 PM",
-    venue: "Main Sanctuary",
+    venue: "Church",
     tag: "Youth",
   },
 ];
@@ -72,6 +74,12 @@ const stats = [
 ];
 
 export default function Home() {
+  const [latestSermon, setLatestSermon] = useState(null);
+
+  useEffect(() => {
+    getLatestSermon().then(setLatestSermon);
+  }, []);
+
   return (
     <>
       {/* ── HERO ── */}
@@ -137,8 +145,8 @@ export default function Home() {
             </span>
             <span className="hidden sm:block text-white opacity-40">|</span>
             <span className="flex items-center gap-2">
-              <FaCalendarAlt /> <strong>Prayer Meeting:</strong> Wednesday 6:00
-              PM
+              <FaCalendarAlt /> <strong>MidWeek Fellowship:</strong> Wednesday
+              5:30 PM
             </span>
           </div>
         </div>
@@ -266,62 +274,60 @@ export default function Home() {
       <section className="py-20 bg-white" id="latest-sermon">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
-            {/* Image / video thumbnail */}
             <div className="relative group cursor-pointer">
               <img
-                src={sermonImg}
-                alt="Latest sermon"
-                className="w-full h-[380px] object-cover shadow-xl"
+                src={latestSermon?.snippet?.thumbnails?.high?.url}
+                alt={latestSermon?.snippet?.title}
+                className="w-full h-[200px] md:h-[300px] object-cover shadow-xl"
               />
+
               <div className="absolute inset-0 bg-primary bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <a
-                  href="https://www.youtube.com/@kyambogosdachurch"
+                  href={`https://www.youtube.com/watch?v=${latestSermon?.id?.videoId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  id="sermon-play-btn"
                   className="w-16 h-16 bg-gold flex items-center justify-center hover:scale-110 transition-transform duration-200"
                 >
                   <FaPlay className="text-white text-xl ml-1" />
                 </a>
               </div>
+
               <div className="absolute top-4 left-4 bg-gold text-white text-xs font-bold uppercase px-3 py-1 tracking-widest">
                 Latest Sermon
               </div>
             </div>
+
             {/* Details */}
             <div>
               <p className="section-label mb-3">From the Pulpit</p>
+
               <h2 className="font-heading text-4xl text-primary font-bold leading-tight mb-4">
-                "Walking by Faith, Not by Sight"
+                {latestSermon?.snippet?.title}
               </h2>
+
               <div className="w-16 h-1 bg-gold mb-6"></div>
-              <p className="text-gray-500 text-sm mb-1">
-                <span className="text-gold font-semibold">Speaker:</span> Pastor
-                James Ssekiboobo
-              </p>
-              <p className="text-gray-500 text-sm mb-1">
-                <span className="text-gold font-semibold">Scripture:</span> 2
-                Corinthians 5:7
-              </p>
+
               <p className="text-gray-500 text-sm mb-6">
-                <span className="text-gold font-semibold">Date:</span> Sabbath,
-                May 10, 2026
+                <span className="text-gold font-semibold">Published:</span>{" "}
+                {formatSermonDate(latestSermon?.snippet?.publishedAt)}
               </p>
-              <p className="text-gray-600 leading-relaxed mb-8">
-                In this powerful message, Pastor Ssekiboobo walks us through
-                what it truly means to trust God in seasons of uncertainty.
-                Drawing from the life of Abraham, we are challenged to step
-                forward even when the way is not clear.
+
+              <p className="text-gray-600 leading-relaxed mb-8 line-clamp-4">
+                {latestSermon?.snippet?.description ||
+                  "Watch the latest sermon from Kyambogo SDA Church on YouTube."}
               </p>
+
               <div className="flex flex-wrap gap-4">
                 <a
-                  href="https://www.youtube.com/@kyambogosdachurch"
+                  href={`https://www.youtube.com/watch?v=${latestSermon?.id?.videoId}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-primary inline-flex items-center gap-2"
                 >
-                  <FaPlay className="text-xs" /> Watch on YouTube
+                  <FaPlay className="text-xs" />
+                  Watch on YouTube
                 </a>
+
                 <Link
                   to="/sermons"
                   className="border-2 border-primary text-primary px-7 py-3 text-sm font-semibold uppercase tracking-wide hover:bg-primary hover:text-white transition-all duration-300"

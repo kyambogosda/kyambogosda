@@ -9,6 +9,7 @@ import {
   FaClock,
 } from "react-icons/fa";
 import sdaChurchLogo from "../../assets/sdachurchlogo.png";
+import sasakuLogo from "../../assets/sasakuHorizontal.png";
 
 const quickLinks = [
   { label: "About Us", path: "/about" },
@@ -22,11 +23,11 @@ const quickLinks = [
 
 const beliefs = [
   "The Holy Scriptures",
-  "The Sabbath (Saturday)",
-  "The Second Coming of Christ",
-  "Baptism by Immersion",
-  "The State of the Dead",
-  "Health & Temperance",
+  "The Holy Trinity",
+  "God the Father",
+  "God the Son",
+  "God the Holy Spirit",
+  "The Great Controversy",
 ];
 
 export default function Footer() {
@@ -40,7 +41,7 @@ export default function Footer() {
             come."
           </p>
           <span className="text-white text-sm font-medium shrink-0">
-            — Revelation 14:7
+            - Revelation 14:7
           </span>
         </div>
       </div>
@@ -93,7 +94,7 @@ export default function Footer() {
               <FaTwitter className="text-base" />
             </a>
             <a
-              href="https://www.tiktok.com/@kyambogosdachurch"
+              href="https://www.tiktok.com/@kyusda?_r=1&_t=ZS-97eGBMwjhCx"
               target="_blank"
               rel="noopener noreferrer"
               id="footer-tiktok"
@@ -150,11 +151,11 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 text-gray-300 text-sm">
                 <FaClock className="text-gold shrink-0" />
-                Sabbath School — 9:00 AM
+                Sabbath School - 8:30 AM
               </div>
               <div className="flex items-center gap-2 text-gray-300 text-sm mt-1">
                 <FaClock className="text-gold shrink-0" />
-                Divine Service — 11:00 AM
+                Divine Service - 11:00 AM
               </div>
             </li>
             <li>
@@ -163,7 +164,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 text-gray-300 text-sm">
                 <FaClock className="text-gold shrink-0" />
-                Prayer Meeting — 6:00 PM
+                MidWeek Fellowship - 5:30 PM
               </div>
             </li>
             <li>
@@ -172,7 +173,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 text-gray-300 text-sm">
                 <FaClock className="text-gold shrink-0" />
-                Vespers — 6:30 PM
+                Vespers - 6:30 PM
               </div>
             </li>
           </ul>
@@ -196,7 +197,7 @@ export default function Footer() {
             <li className="flex items-center gap-3 text-gray-300 text-sm">
               <FaPhone className="text-gold text-base shrink-0" />
               <a
-                href="tel:+256700000000"
+                href="tel:+256774555259"
                 className="hover:text-gold transition-colors duration-200"
               >
                 +256 774555259
@@ -237,13 +238,16 @@ export default function Footer() {
       <div className="border-t border-white border-opacity-10 bg-teal-900 bg-opacity-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-teal-700 flex flex-col items-center justify-center text-white font-black text-[8px] leading-none shrink-0">
-              <span>SA</span>
-              <span>SA</span>
-              <span>KU</span>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-32 flex items-center justify-center shrink-0">
+                <img
+                  src={sasakuLogo}
+                  alt="SASAKU Logo"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
             <p className="text-gray-300 text-xs">
-              <span className="text-teal-400 font-bold">SASAKU</span> —
               Seventh-day Adventist Students Association of Kyambogo University
             </p>
           </div>
@@ -273,7 +277,7 @@ export default function Footer() {
             >
               Seventh-day Adventist Church
             </a>{" "}
-            — Uganda Union Mission
+            - Uganda Union Mission
           </p>
         </div>
       </div>
